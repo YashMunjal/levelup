@@ -1,0 +1,16 @@
+
+<a href="/create-course"><button >Create new Course</button></a>
+
+
+<h2>Courses you teach</h2>
+<hr>
+
+
+<% for (var i = 0; i < foundUser.coursesTeach.length; i++){%>
+<!---
+    <a href="/courses/<%= foundUser.coursesTeach[i].course._id %>" ></a>
+--------->
+<p><%= foundUser.coursesTeach[i] %></p>
+
+
+<%} %>
