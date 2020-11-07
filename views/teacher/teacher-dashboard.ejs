@@ -1,15 +1,20 @@
 
+
+<% if (coursesTeachLength === 0) {%>
+
+<a href="/create-course"><button>Create First Course</button></a>
+
+<%} else {%>
 <a href="/create-course"><button >Create new Course</button></a>
 
-
+<%} %>
 <h2>Courses you teach</h2>
 <hr>
 
 
 <% for (var i = 0; i < foundUser.coursesTeach.length; i++){%>
-<!---
-    <a href="/courses/<%= foundUser.coursesTeach[i].course._id %>" ></a>
---------->
+    <a href="/edit-course/<%= foundUser.coursesTeach[i].course._id %>" ><button>Edit course</button></a>
+    <a href="/delete-course/<%= foundUser.coursesTeach[i]._id %>" ><button>delete course</button></a>
 <p><%= foundUser.coursesTeach[i] %></p>
 
 

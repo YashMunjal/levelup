@@ -1,59 +1,136 @@
-const User=require('../models/userModel');
-const Course=require('../models/course');
+const User = require("../models/userModel");
+const Course = require("../models/course");
+const { v4: uuidv4 } = require("uuid");
+const async = require("async");
 
-const async =require('async')
+module.exports = function (app) {
+  app.get("/create-course", (req, res, next) => {
+    if (req.user) return res.render("teacher/create-course");
 
-module.exports=function(app){
+    res.redirect("/login");
+  });
 
-app.get('/become-instructor',(req,res,next)=>{
-    if(req.user)
-        return res.render('teacher/become-instructor');
-
-    res.redirect('/login')
-
-})
-
-
-app.post('/become-instructor',(req,res,next)=>{
+  app.post("/create-course", (req, res, next) => {
     async.waterfall([
-        function(callback){
-            var course=new Course();
-            course.title=req.body.title;
-            course.price=req.body.price;
-            course.liveId=req.body.liveId;
-            course.desc=req.body.desc;
-            course.ownByTeacher=req.user._id;
-            course.save(function(err){
-                callback(err,course);
-            })
+      function (callback) {
+        var course = new Course();
+        course.title = req.body.title;
+        course.price = req.body.price;
+        course.liveId = uuidv4();
+        course.desc = req.body.desc;
+        course.ownByTeacher = req.user._id;
+        course.save(function (err) {
+          callback(err, course);
+        });
+      },
 
-        },
+      function (course, callback) {
+        User.findOne({ _id: req.user._id }, function (err, foundUser) {
+          foundUser.role = "teacher";
+          foundUser.coursesTeach.push({ course: course._id });
+          foundUser.save(function (err) {
+            if (err) return next(err);
+            res.redirect("/teacher/dashboard");
+          });
+        });
+      },
+    ]);
+  });
 
-        function(course,callback){
-            User.findOne({_id:req.user._id},function(err,foundUser){
-                    foundUser.role="teacher";
-                    foundUser.coursesTeach.push({course:course._id});
-                    foundUser.save(function(err){
-                        if(err) return next(err)
-                        res.redirect('/teacher/dashboard')
-                    })
+  app.get("/teacher/dashboard", function (req, res, next) {
+    if (req.user) {
+      //console.log(req.user.coursesTeach.length);
 
-            })
+      return User.findOne({ _id: req.user._id })
+        .populate("coursesTeach.course")
+        .exec(function (err, foundUser) {
+          res.render("teacher/teacher-dashboard", {
+            foundUser: foundUser,
+            coursesTeachLength: req.user.coursesTeach.length,
+          });
+        });
+    }
+
+    res.redirect("/login");
+  });
+
+  app.get("/edit-course/:id", function (req, res, next) {
+    if (req.user) {
+      Course.findOne({ _id: req.params.id }, function (err, foundCourse) {
+        console.log(req.user._id);
+        console.log(foundCourse.ownByTeacher);
+        console.log(foundCourse.ownByTeacher.equals(req.user._id));
+        return res.render("teacher/edit-course", { course: foundCourse });
+      });
+    }
+  });
+  app.post("/edit-course/:id", function (req, res, next) {
+    Course.findOne({ _id: req.params.id }, function (err, foundCourse) {
+      
+      if (foundCourse) {
+        if (req.body.title) foundCourse.title = req.body.title;
+        if (req.body.price) foundCourse.price = req.body.price;
+        if (req.body.desc) foundCourse.desc = req.body.desc;
+
+        foundCourse.save(function (err) {
+          if (err) return next(err);
+          res.redirect("/teacher/dashboard");
+        });
+      }
+    });
+  });
+
+  app.get("/delete-course/:id", function (req, res, next) {
+    async.waterfall([
+      function (callback) {
+        Course.findOneAndRemove({ _id: req.params.id }, function (err) {
+          callback(err);
+        });
+      },
+      function (callback) {
+        var ind;
+        User.findOne({_id:req.user._id},function(err,foundUser){
+            
+        foundUser.coursesTeach.forEach((i) => {
+          if (i._id == req.params.id) {
+            ind = foundUser.coursesTeach.indexOf(i);
+          }
+        });
+        console.log(ind);
+        foundUser.coursesTeach.splice(ind, 1);
+          foundUser.save(function(err){
+            if(err) return err;
+          })
+        })
+        res.redirect('/teacher/dashboard')
+      },
+    ]);
+  });
+
+  /*app.get("/delete-course/:id", function (req, res, next) {
+    Course.findOneAndDelete({ _id: req.params.id }, function (err) {
+
+      User.findOne({ _id: req.user._id }, function (err, foundUser) {
+        var ind;
+      req.user.coursesTeach.forEach(i => {
+        if(i._id==req.params.id){
+          ind=req.user.coursesTeach.indexOf(i);
         }
 
-
-    ])
-});
-
-app.get('/teacher/dashboard',function(req,res,next){
-    if(req.user)
-    return User.findOne({_id:req.user._id})
-    .populate('coursesTeach.course').exec(function(err,foundUser){
-        res.render('teacher/teacher-dashboard',{foundUser:foundUser});
     })
+      req.user.coursesTeach.splice(ind,1);
+      
+     foundUser.save(function(err){
+       if(err) return next(err);
+       res.redirect('/teacher/dashboard')
+     });
 
-    res.redirect('/login')
+      })
+      
+      return res.redirect("/teacher/dashboard");
+    });
+  });*/
+};
 
-})
-
-}
+//<a href="/edit-course/<%= foundUser.coursesTeach[i].course._id %>" ><button>Edit course</button></a>
+//<a href="/delete-course/<%= foundUser.coursesTeach[i].course._id %>" ><button>delete course</button></a>
