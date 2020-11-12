@@ -1,0 +1,33 @@
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="Levelup" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="">Home</a></li>
+                    <li><a href="">Browse</a></li>
+                    <li><a href="">Support</a></li>
+                    <%if (name) {%>
+                            <li><a href="/profile"><%= name %></a></li>
+                   <% }else { %>
+                    <li><a href="login">Login/Register</a></li>
+
+                    <%} %>
+                </ul>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <h1>Learn More Each Day!</h1>
+                <p>You have to burn the midnight oil to get success</p>
+                <a href="" class="btn"> Join Today &#8594 </a>
+            </div>
+            <div class="col-2">
+                <img src="images/image1.png" />
+
+            </div>
+        </div>
+    </div>
+</div>

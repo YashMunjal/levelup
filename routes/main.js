@@ -1,5 +1,12 @@
 module.exports=function(app){
     app.get('/',(req,res)=>{
-        res.render('home');
+        var name;
+        if(req.user){
+            name=req.user.email
+        }
+        else{
+            name=undefined;
+        }
+        res.render('home',{name:name});
     })
 }
