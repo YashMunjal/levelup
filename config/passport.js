@@ -6,7 +6,12 @@ var User=require('../models/userModel')
 
 /* Password Compare */
 
-
+function checkPassword(a,b){
+    if(a==b){
+        return true;
+    }
+    return false;
+}
 
 
 
@@ -35,7 +40,7 @@ passport.use('local-login',new LocalStrategy({
         if(!user){
             return done(null,false)
         }
-        if(!user){
+        if(!checkPassword(user.password,password)){
             return done(null,false)
         }
         req.flash('loginMessage','Successfully login')

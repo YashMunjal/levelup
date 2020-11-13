@@ -6,7 +6,7 @@ module.exports = function (app) {
   app.get("/login", function (req, res, next) {
     if (req.user) return res.redirect("/");
     else {
-      res.render("accounts/login");
+      res.render("accounts/login",{name:undefined});
     }
   });
   app.post('/login',passport.authenticate('local-login',{
