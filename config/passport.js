@@ -2,15 +2,15 @@ const passport=require('passport');
 var LocalStrategy=require('passport-local').Strategy;
 
 var User=require('../models/userModel')
-
+var bcrypt=require('bcryptjs')
 
 /* Password Compare */
 
-function checkPassword(a,b){
-    if(a==b){
-        return true;
-    }
-    return false;
+async function checkPassword(a,b){
+    console.log(a,b);
+    const isMatch=await bcrypt.compare(a,b);
+    console.log(isMatch);
+    return isMatch;
 }
 
 
@@ -33,14 +33,13 @@ passport.use('local-login',new LocalStrategy({
     passwordField:'password',
     passReqToCallback:true
 },function(req,email,password,done){
-    console.log(email,password)
     User.findOne({email:email},function(err,user){
         if(err) return done(err);
 
         if(!user){
             return done(null,false)
         }
-        if(!checkPassword(user.password,password)){
+        if(checkPassword(user.password,password)){
             return done(null,false)
         }
         req.flash('loginMessage','Successfully login')

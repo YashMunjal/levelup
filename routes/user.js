@@ -1,6 +1,7 @@
 const passport = require("passport");
 const passConfig = require("../config/passport");
 const User=require('../models/userModel')
+const bcrypt =require('bcryptjs');
 
 module.exports = function (app) {
   app.get("/login", function (req, res, next) {
@@ -21,10 +22,13 @@ module.exports = function (app) {
     }))*/
     
 
-app.post('/create-user',(req,res)=>{
+app.post('/create-user',async (req,res)=>{
     var user=new User();
     user.email=req.body.email;
-    user.password=req.body.password;
+    const salt=await bcrypt.genSalt(10);
+
+
+    user.password=await bcrypt.hash(req.body.password,salt);
     user.save(function(err){
         res.json(user);
     })
