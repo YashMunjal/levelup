@@ -18,12 +18,12 @@
         </div>
         <div class="col-lg-3 text-right">
             <%if (name) {%>
-                <a href="/profile" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> <%= name %></a>
+                <a href="/profile" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> <%= name.toString().split('@')[0] %></a>
                 <a href="/logout" class="small mr-3"><span class="icon-unlock-alt"></span> Log Out</a>
        <% }else { %>
         
         <a href="/login" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
-        <a href="register.html" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+        <a href="/create-user" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
         <%} %>
         </div>
       </div>

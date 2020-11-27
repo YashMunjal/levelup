@@ -6,14 +6,6 @@ var bcrypt=require('bcryptjs')
 
 /* Password Compare */
 
-async function checkPassword(a,b){
-    console.log(a,b);
-    const isMatch=await bcrypt.compare(a,b);
-    console.log(isMatch);
-    return isMatch;
-}
-
-
 
 
 
@@ -39,7 +31,7 @@ passport.use('local-login',new LocalStrategy({
         if(!user){
             return done(null,false)
         }
-        if(checkPassword(user.password,password)){
+        if(user.password!=password){
             return done(null,false)
         }
         req.flash('loginMessage','Successfully login')
@@ -82,3 +74,4 @@ passport.use(new FacebookStrategy(secret.facebook,function(req,token,refreshToke
 }))
 
 */
+
