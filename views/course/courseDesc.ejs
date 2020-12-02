@@ -81,7 +81,7 @@
                         <p>
                             <%if (isEnrolled===false) {%>
 
-                        <form method="POST" action="/">
+                        <form method="POST" action="/courses/enroll/<%= courses[0]._id %>">
                             <button type="submit" class="btn btn-primary rounded-0 btn-lg px-5">Enroll</a>
                         </form>
                         <%}else{%>
