@@ -42,15 +42,15 @@
         </div>
         <div class="custom-breadcrumns border-bottom">
             <div class="container">
-              <a href="/">Home</a>
-              <span class="mx-3 icon-keyboard_arrow_right"></span>
-              <a href="/courses">Courses</a>
-              <span class="mx-3 icon-keyboard_arrow_right"></span>
-              <span class="current">Enrollment</span>
+                <a href="/">Home</a>
+                <span class="mx-3 icon-keyboard_arrow_right"></span>
+                <a href="/courses">Courses</a>
+                <span class="mx-3 icon-keyboard_arrow_right"></span>
+                <span class="current">Enrollment</span>
             </div>
-          </div>
+        </div>
 
-          <div class="site-section">
+        <div class="site-section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 mb-4">
@@ -59,28 +59,39 @@
                         </p>
                     </div>
                     <div class="col-lg-5 ml-auto align-self-center">
-                            <h2 class="section-title-underline mb-5">
-                                <span>Course Details</span>
-                            </h2>
-                            
-                            <p><strong class="text-black d-block">Teacher:</strong> <%= teacherName %></p>
-                            <p class="mb-5"><strong class="text-black d-block">Hours:</strong> 8:00 am &mdash; 9:30am</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At itaque dolore libero corrupti! Itaque, delectus?</p>
-                            <p>Modi sit dolor repellat esse! Sed necessitatibus itaque libero odit placeat nesciunt, voluptatum totam facere.</p>
-        
-                            <ul class="ul-check primary list-unstyled mb-5">
-                                <li>Lorem ipsum dolor sit amet consectetur</li>
-                                <li>consectetur adipisicing  </li>
-                                <li>Sit dolor repellat esse</li>
-                                <li>Necessitatibus</li>
-                                <li>Sed necessitatibus itaque </li>
-                            </ul>
-    
-                            <p>
-                                <a href="#" class="btn btn-primary rounded-0 btn-lg px-5">Enroll</a>
-                            </p>
-        
-                        </div>
+                        <h2 class="section-title-underline mb-5">
+                            <span>Course Details</span>
+                        </h2>
+
+                        <p><strong class="text-black d-block">Teacher:</strong> <%= teacherName %></p>
+                        <p class="mb-5"><strong class="text-black d-block">Hours:</strong> 8:00 am &mdash; 9:30am</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At itaque dolore libero corrupti!
+                            Itaque, delectus?</p>
+                        <p>Modi sit dolor repellat esse! Sed necessitatibus itaque libero odit placeat nesciunt,
+                            voluptatum totam facere.</p>
+
+                        <ul class="ul-check primary list-unstyled mb-5">
+                            <li>Lorem ipsum dolor sit amet consectetur</li>
+                            <li>consectetur adipisicing </li>
+                            <li>Sit dolor repellat esse</li>
+                            <li>Necessitatibus</li>
+                            <li>Sed necessitatibus itaque </li>
+                        </ul>
+
+                        <p>
+                            <%if (isEnrolled===false) {%>
+
+                        <form method="POST" action="/">
+                            <button type="submit" class="btn btn-primary rounded-0 btn-lg px-5">Enroll</a>
+                        </form>
+                        <%}else{%>
+
+                        <a href="#" class="btn btn-primary rounded-0 btn-lg px-5">Go to Your Live Room</a>
+
+                        <%}  %>
+                        </p>
+
+                    </div>
                 </div>
             </div>
         </div>

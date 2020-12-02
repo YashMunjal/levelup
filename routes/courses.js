@@ -28,21 +28,32 @@ module.exports=function(app){
                 })
             },
             function(callback){
-                Course.find({_id:req.params.id},function(err,courseFound){
-                    callback(err,courseFound)
+                User.findOne({_id:req.user._id,'coursesTeach.course':req.params.id})
+                .populate('coursesTeach.course')
+                .exec(function(err,foundUserCourse){
+                    callback(err,foundUserCourse)
                     
                 })
             },
         ], async function(err,results){
             var course=results[0];
-            
+            var userCourse=results[1];
+            var teacherCourse=results[2];
+
+            console.log(teacherCourse);
+
             var teacherName;
             await User.find({_id:course[0].ownByTeacher},function(err,teacherfound){
                 teacherName=teacherfound[0].email;
                 
             })
-
-            res.render('course/courseDesc',{courses:course,name:req.user.email,teacherName:teacherName})
+            if(userCourse===null && teacherCourse===null){       
+             res.render('course/courseDesc',{courses:course,name:req.user.email,teacherName:teacherName,isEnrolled:false,isTeacher:false})
+            }else if(userCourse!==null && teacherCourse===null){
+                res.render('course/courseDesc',{courses:course,name:req.user.email,teacherName:teacherName,isEnrolled:true,isTeacher:false})
+            }else{
+                res.render('course/courseDesc',{courses:course,name:req.user.email,teacherName:teacherName,isEnrolled:true,isTeacher:true})
+            }
         })
 
         
