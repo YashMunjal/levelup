@@ -64,7 +64,6 @@ module.exports = function (app) {
   });
   app.post("/edit-course/:id", function (req, res, next) {
     Course.findOne({ _id: req.params.id }, function (err, foundCourse) {
-      
       if (foundCourse && foundCourse.ownByTeacher.equals(req.user._id)) {
         if (req.body.title) foundCourse.title = req.body.title;
         if (req.body.price) foundCourse.price = req.body.price;
@@ -74,44 +73,40 @@ module.exports = function (app) {
           if (err) return next(err);
           res.redirect("/teacher/dashboard");
         });
-      }else{
-        res.redirect('/teacher/dashboard')
+      } else {
+        res.redirect("/teacher/dashboard");
       }
     });
   });
 
-  app.get("/delete-course/:id", function (req, res, next) {
-    Course.findOne({_id:req.params.id},function(err,foundCourse){
-      if(1){
-          //security left
-    async.waterfall([
-      function (callback) {
-        Course.findOneAndRemove({ _id: req.params.id }, function (err) {
-          callback(err);
-        });
-      },
-      function (callback) {
-        var ind;
-        User.findOne({_id:req.user._id},function(err,foundUser){
-            
+  app.get("/delete-course/:id", async function (req, res, next) {
+    if (1) {
+      //security left
+
+     
+      var ind;
+      /*await User.findOne({ _id: req.user._id }, function (err, foundUser) {
         foundUser.coursesTeach.forEach((i) => {
           if (i._id == req.params.id) {
             ind = foundUser.coursesTeach.indexOf(i);
           }
         });
-        console.log(ind);
         foundUser.coursesTeach.splice(ind, 1);
-          foundUser.save(function(err){
-            if(err) return err;
-          })
-        })
-        res.redirect('/teacher/dashboard')
-      },
-    ]);
-      }else{
-        res.redirect('/teacher/dashboard');
-      }
-    })
+        foundUser.save(function (err) {
+          if (err) return err;
+        });
+      });*/
+
+      await Course.findOne(
+        { _id: req.params.id },
+        function (err, course) {
+          console.log(course);
+        }
+      );
+      res.redirect("/teacher/dashboard");
+    } else {
+      res.redirect("/teacher/dashboard");
+    }
   });
 
   /*app.get("/delete-course/:id", function (req, res, next) {

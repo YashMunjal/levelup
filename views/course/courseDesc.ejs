@@ -79,16 +79,19 @@
                         </ul>
 
                         <p>
-                            <%if (isEnrolled===false) {%>
+                            <%if (isEnrolled===false && isLogin===true) {%>
 
                         <form method="POST" action="/courses/enroll/<%= courses[0]._id %>">
                             <button type="submit" class="btn btn-primary rounded-0 btn-lg px-5">Enroll</a>
                         </form>
-                        <%}else{%>
+                        <%}else if(isEnrolled===true){%>
 
                         <a href="#" class="btn btn-primary rounded-0 btn-lg px-5">Go to Your Live Room</a>
 
-                        <%}  %>
+                        <%}else{%>
+                            <button href="#" style="cursor:not-allowed" class="btn btn-primary rounded-0 btn-lg px-5" >Login to Enroll</button>
+
+                            <%}  %>
                         </p>
 
                     </div>

@@ -6,7 +6,7 @@ var CourseSchema=new mongoose.Schema({
     liveId:String,
     price:Number,
     ownByTeacher:{type:mongoose.Schema.Types.ObjectId,ref:'User'},
-    ownByStudent:[{user:{type:mongoose.Schema.Types.ObjectId,ref:'User'}}],
+    ownByStudent:[{user:{type:mongoose.Schema.Types.ObjectId,ref:'User'},student:mongoose.Schema.Types.ObjectId}],
 
     totalStudents:Number
 })

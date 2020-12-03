@@ -14,7 +14,7 @@
 
 <% for (var i = 0; i < foundUser.coursesTeach.length; i++){%>
     <a href="/edit-course/<%= foundUser.coursesTeach[i].course._id %>" ><button>Edit course</button></a>
-    <a href="/delete-course/<%= foundUser.coursesTeach[i]._id %>" ><button>delete course</button></a>
+    <a href="/delete-course/<%= foundUser.coursesTeach[i].course._id %>" ><button>delete course</button></a>
 <p><%= foundUser.coursesTeach[i] %></p>
 
 
