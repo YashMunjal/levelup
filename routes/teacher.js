@@ -85,7 +85,7 @@ module.exports = function (app) {
 
      
       var ind;
-      /*await User.findOne({ _id: req.user._id }, function (err, foundUser) {
+      await User.findOne({ _id: req.user._id }, function (err, foundUser) {
         foundUser.coursesTeach.forEach((i) => {
           if (i._id == req.params.id) {
             ind = foundUser.coursesTeach.indexOf(i);
@@ -95,9 +95,32 @@ module.exports = function (app) {
         foundUser.save(function (err) {
           if (err) return err;
         });
-      });*/
+      });
 
       await Course.findOne(
+        { _id: req.params.id },
+        function (err, course) {
+          course.ownByStudent.forEach((i)=>{
+             User.findOne({_id:i.student},function(err,foundUser){
+
+              foundUser.coursesTaken.forEach((i) => {
+                if (i._id == req.params.id) {
+                  ind = foundUser.coursesTaken.indexOf(i);
+                }
+              });
+              foundUser.coursesTaken.splice(ind, 1);
+              foundUser.save(function (err) {
+                if (err) return err;
+              });
+
+            })
+          })
+          //console.log(course);
+        }
+      );
+
+
+      await Course.findOneAndDelete(
         { _id: req.params.id },
         function (err, course) {
           console.log(course);

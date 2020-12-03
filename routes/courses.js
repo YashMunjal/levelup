@@ -17,8 +17,14 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/courses/:id", function (req, res, next) {
+  app.get("/courses/:id", async function (req, res, next) {
     if (req.user) {
+      var courseHai;
+      await Course.find({_id:req.params.id},function(err,courseFound){
+          console.log(courseFound);
+          courseHai=courseFound;
+      })
+      if(courseHai){
       async.parallel(
         [
           function (callback) {
@@ -91,7 +97,9 @@ module.exports = function (app) {
             });
           }
         }
-      );
+      )}else{
+        res.redirect('/courses')
+      };
     } else {
       async function notLoginCourse() {
         var course;
@@ -121,9 +129,9 @@ module.exports = function (app) {
 
   //enrollment
   app.post("/courses/enroll/:id", async (req, res) => {
+
     await Course.findOne({ _id: req.params.id }, function (err, courseFound) {
-      console.log(courseFound.ownByStudent);
-      console.log(req.user._id);
+      
       courseFound.ownByStudent.push({ student: req.user._id });
       courseFound.save(function (err) {
         if (err) console.log(err);
