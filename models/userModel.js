@@ -5,6 +5,7 @@ const userSchema=new mongoose.Schema({
     email:{type:String,unique:true,lowercase:true},
     password:String,
     role:String,
+    image:String,
     coursesTeach:[{
         course:{
             type:mongoose.Schema.Types.ObjectId,ref:'Course'
