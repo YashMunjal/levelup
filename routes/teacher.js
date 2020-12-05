@@ -47,6 +47,7 @@ module.exports = function (app) {
           res.render("teacher/teacher-dashboard", {
             foundUser: foundUser,
             coursesTeachLength: req.user.coursesTeach.length,
+            name:req.user
           });
         });
     }

@@ -68,7 +68,7 @@ module.exports = function (app) {
       );
       console.log(avatar);
       return res.render("accounts/profile", {
-        message: req.flash("loginMessage"),name:req.user.name,avatar:avatar
+        message: req.flash("loginMessage"),name:req.user,avatar:avatar
       });
     }
     res.redirect("/login");

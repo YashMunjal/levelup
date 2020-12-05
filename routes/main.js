@@ -2,7 +2,7 @@ module.exports=function(app){
     app.get('/',(req,res)=>{
         var name;
         if(req.user){
-            name=req.user.email
+            name=req.user
         }
         else{
             name=undefined;

@@ -9,7 +9,7 @@ module.exports = function (app) {
       if (req.user) {
         res.render("course/courses", {
           courses: courses,
-          name: req.user.name,
+          name: req.user,
         });
       } else {
         res.render("course/courses", { courses: courses, name: undefined });
@@ -71,7 +71,7 @@ module.exports = function (app) {
           if (userCourse === null && teacherCourse === null) {
             res.render("course/courseDesc", {
               courses: course,
-              name: req.user.name,
+              name: req.user,
               teacherName: teacherName,
               isEnrolled: false,
               isTeacher: false,
@@ -80,7 +80,7 @@ module.exports = function (app) {
           } else if (userCourse !== null && teacherCourse === null) {
             res.render("course/courseDesc", {
               courses: course,
-              name: req.user.name,
+              name: req.user,
               teacherName: teacherName,
               isEnrolled: true,
               isTeacher: false,
@@ -89,7 +89,7 @@ module.exports = function (app) {
           } else {
             res.render("course/courseDesc", {
               courses: course,
-              name: req.user.name,
+              name: req.user,
               teacherName: teacherName,
               isEnrolled: true,
               isTeacher: true,
