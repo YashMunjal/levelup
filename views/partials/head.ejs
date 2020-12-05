@@ -18,7 +18,7 @@
         </div>
         <div class="col-lg-3 text-right">
             <%if (name) {%>
-                <a href="/profile" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> <%= name.toString().split('@')[0] %></a>
+                <a href="/profile" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> <%= name.toString().split(' ')[0] %></a>
                 <a href="/logout" class="small mr-3"><span class="icon-unlock-alt"></span> Log Out</a>
        <% }else { %>
         
@@ -44,15 +44,15 @@
               <li class="active">
                 <a href="/" class="nav-link text-left">Home</a>
               </li>
-              <li class="has-children">
+              <!--<li class="has-children">
                 <a href="about.html" class="nav-link text-left">About Us</a>
                 <ul class="dropdown">
                   <li><a href="teachers.html">Our Teachers</a></li>
                   <li><a href="about.html">Our School</a></li>
                 </ul>
-              </li>
+              </li>--->
               <li>
-                <a href="admissions.html" class="nav-link text-left">Admissions</a>
+                <a href="/teacher-dashboard" class="nav-link text-left">Become a Teacher</a>
               </li>
               <li>
                 <a href="/courses" class="nav-link text-left">Courses</a>

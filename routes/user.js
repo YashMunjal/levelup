@@ -2,7 +2,8 @@ const passport = require("passport");
 const passConfig = require("../config/passport");
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
-
+const gravatar=require('gravatar');
+const normalize=require('normalize-url');
 module.exports = function (app) {
   app.get("/login", function (req, res, next) {
     if (req.user) return res.redirect("/");
@@ -41,13 +42,13 @@ module.exports = function (app) {
           var user = new User();
 
           //  const salt=await bcrypt.genSalt(10);
-
+         user.name=req.body.name
           user.email = req.body.email;
           user.password = req.body.password;
           await user.save(function (err) {
-            res.json(user);
+            //res.json(user);
           });
-          console.log("Done");
+          //console.log("Done");
           await  res.render('accounts/login',{ name: undefined });
   });
   app.get("/logout", (req, res, next) => {
@@ -57,8 +58,17 @@ module.exports = function (app) {
 
   app.get("/profile", (req, res, next) => {
     if (req.user) {
+      const avatar = normalize(
+        gravatar.url(req.user.email, {
+          s: '200',
+          r: 'pg',
+          d: 'mm'
+        }),
+        { forceHttps: true }
+      );
+      console.log(avatar);
       return res.render("accounts/profile", {
-        message: req.flash("loginMessage"),name:req.user.email
+        message: req.flash("loginMessage"),name:req.user.name,avatar:avatar
       });
     }
     res.redirect("/login");

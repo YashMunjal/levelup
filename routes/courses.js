@@ -9,7 +9,7 @@ module.exports = function (app) {
       if (req.user) {
         res.render("course/courses", {
           courses: courses,
-          name: req.user.email,
+          name: req.user.name,
         });
       } else {
         res.render("course/courses", { courses: courses, name: undefined });
@@ -64,14 +64,14 @@ module.exports = function (app) {
           await User.find(
             { _id: course[0].ownByTeacher },
             function (err, teacherfound) {
-              teacherName = teacherfound[0].email;
+              teacherName = teacherfound[0].name;
             }
           );
 
           if (userCourse === null && teacherCourse === null) {
             res.render("course/courseDesc", {
               courses: course,
-              name: req.user.email,
+              name: req.user.name,
               teacherName: teacherName,
               isEnrolled: false,
               isTeacher: false,
@@ -80,7 +80,7 @@ module.exports = function (app) {
           } else if (userCourse !== null && teacherCourse === null) {
             res.render("course/courseDesc", {
               courses: course,
-              name: req.user.email,
+              name: req.user.name,
               teacherName: teacherName,
               isEnrolled: true,
               isTeacher: false,
@@ -89,7 +89,7 @@ module.exports = function (app) {
           } else {
             res.render("course/courseDesc", {
               courses: course,
-              name: req.user.email,
+              name: req.user.name,
               teacherName: teacherName,
               isEnrolled: true,
               isTeacher: true,
@@ -110,7 +110,7 @@ module.exports = function (app) {
         await User.find(
           { _id: course[0].ownByTeacher },
           function (err, teacherfound) {
-            teacherName = teacherfound[0].email;
+            teacherName = teacherfound[0].name;
           }
         );
         res.render("course/courseDesc", {
